@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,8 +47,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public int averageAge() {
-        return personRepository.getAverageAge();
+    public Map<String, Integer> averageAge() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("averageAge", personRepository.getAverageAge());
+        return map;
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PersonController {
@@ -30,7 +31,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/persons/average-age", method = RequestMethod.GET)
-    public int averageAge() {
+    public Map<String, Integer> averageAge() {
         return personService.averageAge();
     }
 
