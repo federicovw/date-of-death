@@ -21,28 +21,40 @@ public class PersonServiceImpl implements PersonService {
     PersonRepository personRepository;
 
     @Override
-    public void create(Person person) {
+    public PersonDTO create(Person person) {
         validatePerson(person);
-        personRepository.save(person);
+        Person savedPerson = personRepository.save(person);
+        return new PersonDTO(savedPerson);
     }
 
     private void validatePerson(Person person) {
-        List<String> fields = new ArrayList<>();
-        if (person.getFirstName() == null) {
-            fields.add("First Name");
+        String msg = null;
+        if (person == null) {
+            msg = "A person is needed to perform the save";
         }
-        if (person.getLastName() == null) {
-            fields.add("Last Name");
-        }
-        if (person.getAge() == 0) {
-            fields.add("Age");
-        }
-        if (person.getDateOfBirth() == null) {
-            fields.add("Date of Birth");
+        else {
+            List<String> fields = new ArrayList<>();
+            if (person.getFirstName() == null) {
+                fields.add("First Name");
+            }
+            if (person.getLastName() == null) {
+                fields.add("Last Name");
+            }
+            if (person.getAge() < 0) {
+                fields.add("Age");
+            }
+            if (person.getDateOfBirth() == null) {
+                fields.add("Date of Birth");
+            }
+
+            if (!fields.isEmpty()){
+                msg = "The following fields are not populated or invalid: " + fields;
+            }
         }
 
-        if (!fields.isEmpty()) {
-            throw new IllegalArgumentException("The following fields are not populated or invalid: " + fields);
+
+        if (msg != null) {
+            throw new IllegalArgumentException(msg);
         }
     }
 
@@ -56,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<PersonDTO> dateOfDeathList() {
         List<PersonDTO> personDTOList = personRepository.findAll().stream()
-                .map(Person::convertToDTO)
+                .map(PersonDTO::new)
                 .collect(Collectors.toList());
         personDTOList.forEach(personDTO -> personDTO.setDateOfDeath(calculateDateOfDeath(personDTO.getDateOfBirth())));
         return personDTOList;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PersonService {
-    void create(Person person);
+    PersonDTO create(Person person);
 
     Map<String, Integer> averageAge();
 

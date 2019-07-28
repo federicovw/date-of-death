@@ -22,12 +22,13 @@ public class PersonController {
 
     @RequestMapping(value = "/persons", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@RequestBody Person person) {
+        PersonDTO savedPersonDTO;
         try {
-            personService.create(person);
+            savedPersonDTO = personService.create(person);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Person was created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(savedPersonDTO, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/persons/average-age", method = RequestMethod.GET)

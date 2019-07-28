@@ -68,9 +68,4 @@ public class Person {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-    public PersonDTO convertToDTO()
-    {
-        return new PersonDTO(this);
-    }
 }
